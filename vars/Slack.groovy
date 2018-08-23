@@ -20,10 +20,6 @@ def notifySlack(text, channel, attachments) {
     sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slackURL}"
 }
 
-def slackNotificationChannel = "spam"
-def message = ""
-def author = ""
-
 def getGitAuthor() {
     def commit = sh(returnStdout: true, script: 'git rev-parse HEAD')
     author = sh(returnStdout: true, script: "git --no-pager show -s --format='%an' ${commit}").trim()
@@ -35,9 +31,13 @@ def getLastCommitMessage() {
 
 def call() {
 
+    def slackNotificationChannel = "spam"
+    def message = ""
+    def author = ""
     //Get commit detail
     getGitAuthor()
     getLastCommitMessage()
+
     //Send notification to slack
     notifySlack("", slackNotificationChannel, [
     [
