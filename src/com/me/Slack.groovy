@@ -9,7 +9,7 @@ import hudson.tasks.junit.CaseResult
 def slackNotificationChannel = "spam"
 def message = ""
 def author = ""
-def attachments = "Hello"
+def attachments = "Hello1"
 
 def getGitAuthor = {
     def commit = sh(returnStdout: true, script: 'git rev-parse HEAD')
