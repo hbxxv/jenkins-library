@@ -23,25 +23,22 @@ def notifySlack(text, channel, attachments) {
 def slackNotificationChannel = "spam"
 def message = ""
 def author = ""
+def commit = sh(returnStdout: true, script: 'git rev-parse HEAD')
 
-def getGitAuthor = {
-    def commit = sh(returnStdout: true, script: 'git rev-parse HEAD')
+
+def getGitAuthor() {
     author = sh(returnStdout: true, script: "git --no-pager show -s --format='%an' ${commit}").trim()
 }
 
-def getLastCommitMessage = {
+def getLastCommitMessage() {
     message = sh(returnStdout: true, script: 'git log -1 --pretty=%B').trim()
-}
-
-def populateGlobalVariables() {
-    getLastCommitMessage()
-    getGitAuthor()
 }
 
 def call() {
 
     //Get commit detail
-    populateGlobalVariables()
+    getGitAuthor()
+    getLastCommitMessage()
     //Send notification to slack
     notifySlack("", slackNotificationChannel, [
     [
