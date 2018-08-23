@@ -9,7 +9,29 @@ def message = ""
 def author = ""
 def slackNotificationChannel = "spam"
 
-def notifySlack(text, channel, attachments) {
+def notifySlack(text, spam, [
+            [
+                title: "${env.JOB_NAME}, build #${env.BUILD_NUMBER}",
+                title_link: "${env.BUILD_URL}",
+                color: "danger",
+                author_name: "${author}",
+                text: "${currentBuild.currentResult}",
+                "mrkdwn_in": ["fields"],
+                fields: [
+                    [
+                        title: "Branch:",
+                        value: "${env.GIT_BRANCH}",
+                        short: true
+                    ],
+                    [
+                        title: "Last Commit:",
+                        value: "${message}",
+                        short: false
+                    ]
+                ]
+            ]
+            ]) {
+    
     def slackURL = 'https://hooks.slack.com/services/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'
     def jenkinsIcon = 'https://wiki.jenkins-ci.org/download/attachments/2916393/logo.png'
 
