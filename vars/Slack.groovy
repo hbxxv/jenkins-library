@@ -6,7 +6,23 @@ import hudson.model.Actionable
 import hudson.tasks.junit.CaseResult
 
 
-def call(String name = 'human') {
+def notifySlack(text, channel, attachments) {
+    def slackURL = 'https://hooks.slack.com/services/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'
+    def jenkinsIcon = 'https://wiki.jenkins-ci.org/download/attachments/2916393/logo.png'
+
+    def payload = JsonOutput.toJson([text: text,
+        channel: channel,
+        username: "Jenkins",
+        icon_url: jenkinsIcon,
+        attachments: attachments
+    ])
+
+    sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slackURL}"
+}
+
+
+
+def call() {
 
 
     def slackNotificationChannel = "spam"
@@ -25,20 +41,6 @@ def call(String name = 'human') {
     def populateGlobalVariables = {
         getLastCommitMessage()
         getGitAuthor()
-    }
-
-    def notifySlack(text, channel, attachments) {
-        def slackURL = 'https://hooks.slack.com/services/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'
-        def jenkinsIcon = 'https://wiki.jenkins-ci.org/download/attachments/2916393/logo.png'
-
-        def payload = JsonOutput.toJson([text: text,
-            channel: channel,
-            username: "Jenkins",
-            icon_url: jenkinsIcon,
-            attachments: attachments
-        ])
-
-        sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slackURL}"
     }
 
     notifySlack("", slackNotificationChannel, [
