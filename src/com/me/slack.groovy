@@ -1,4 +1,4 @@
-src/com/me/slack.groovy
+src/com/me/Slack.groovy
 
 import groovy.json.JsonOutput
 import java.util.Optional
