@@ -5,9 +5,6 @@ import java.util.Optional
 import hudson.model.Actionable
 import hudson.tasks.junit.CaseResult
 
-def message = ""
-def author = ""
-
 def notifySlack(text, channel, attachments) {
     def slackURL = 'https://hooks.slack.com/services/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'
     def jenkinsIcon = 'https://wiki.jenkins-ci.org/download/attachments/2916393/logo.png'
