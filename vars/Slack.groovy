@@ -20,29 +20,29 @@ def notifySlack(text, channel, attachments) {
     sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slackURL}"
 }
 
+def slackNotificationChannel = "spam"
+def message = ""
+def author = ""
 
+def getGitAuthor = {
+    def commit = sh(returnStdout: true, script: 'git rev-parse HEAD')
+    author = sh(returnStdout: true, script: "git --no-pager show -s --format='%an' ${commit}").trim()
+}
+
+def getLastCommitMessage = {
+    message = sh(returnStdout: true, script: 'git log -1 --pretty=%B').trim()
+}
+
+def populateGlobalVariables = {
+    getLastCommitMessage()
+    getGitAuthor()
+}
 
 def call() {
 
-
-    def slackNotificationChannel = "spam"
-    def message = ""
-    def author = ""
-
-    def getGitAuthor = {
-        def commit = sh(returnStdout: true, script: 'git rev-parse HEAD')
-        author = sh(returnStdout: true, script: "git --no-pager show -s --format='%an' ${commit}").trim()
-    }
-
-    def getLastCommitMessage = {
-        message = sh(returnStdout: true, script: 'git log -1 --pretty=%B').trim()
-    }
-
-    def populateGlobalVariables = {
-        getLastCommitMessage()
-        getGitAuthor()
-    }
-
+    //Get commit detail
+    populateGlobalVariables()
+    //Send notification to slack
     notifySlack("", slackNotificationChannel, [
     [
         title: "${env.JOB_NAME}, build #${env.BUILD_NUMBER}",
@@ -66,8 +66,5 @@ def call() {
     ]
     
     ])
-    // Any valid steps can be called from this code, just like in other
-    // Scripted Pipeline
-
 
 }
