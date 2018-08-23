@@ -7,44 +7,7 @@ import hudson.tasks.junit.CaseResult
 
 def message = ""
 def author = ""
-def slackNotificationChannel = "spam"
-
-def notifySlack(text, spam, [
-            [
-                title: "${env.JOB_NAME}, build #${env.BUILD_NUMBER}",
-                title_link: "${env.BUILD_URL}",
-                color: "danger",
-                author_name: "${author}",
-                text: "${currentBuild.currentResult}",
-                "mrkdwn_in": ["fields"],
-                fields: [
-                    [
-                        title: "Branch:",
-                        value: "${env.GIT_BRANCH}",
-                        short: true
-                    ],
-                    [
-                        title: "Last Commit:",
-                        value: "${message}",
-                        short: false
-                    ]
-                ]
-            ]
-            ]) {
-    
-    def slackURL = 'https://hooks.slack.com/services/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'
-    def jenkinsIcon = 'https://wiki.jenkins-ci.org/download/attachments/2916393/logo.png'
-
-    def payload = JsonOutput.toJson([text: text,
-        channel: channel,
-        username: "Jenkins",
-        icon_url: jenkinsIcon,
-        attachments: attachments
-    ])
-
-    sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slackURL}"
-}
-
+def attachments = "Hello"
 
 def getGitAuthor = {
     def commit = sh(returnStdout: true, script: 'git rev-parse HEAD')
@@ -58,4 +21,19 @@ def getLastCommitMessage = {
 def populateGlobalVariables = {
     getLastCommitMessage()
     getGitAuthor()
+}
+
+
+def notifySlack(text, channel, attachments) {
+    def slackURL = 'https://hooks.slack.com/services/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'
+    def jenkinsIcon = 'https://wiki.jenkins-ci.org/download/attachments/2916393/logo.png'
+
+    def payload = JsonOutput.toJson([text: text,
+        channel: channel,
+        username: "Jenkins",
+        icon_url: jenkinsIcon,
+        attachments: attachments
+    ])
+
+    sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slackURL}"
 }
