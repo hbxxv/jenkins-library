@@ -33,7 +33,7 @@ def getLastCommitMessage = {
     message = sh(returnStdout: true, script: 'git log -1 --pretty=%B').trim()
 }
 
-def populateGlobalVariables = {
+def populateGlobalVariables() {
     getLastCommitMessage()
     getGitAuthor()
 }
