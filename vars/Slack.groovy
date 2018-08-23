@@ -1,9 +1,13 @@
 //var/Slack.groovy
 
+import groovy.json.JsonOutput
+import java.util.Optional
+import hudson.model.Actionable
+import hudson.tasks.junit.CaseResult
+
+
 def call(String name = 'human') {
-    import java.util.Optional
-    import hudson.model.Actionable
-    import hudson.tasks.junit.CaseResult
+
 
     def slackNotificationChannel = "spam"
     def message = ""
