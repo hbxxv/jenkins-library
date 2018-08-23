@@ -1,5 +1,5 @@
 src/com/me/slack.groovy
-#!/usr/bin/groovy
+
 package com.me;
 
 import groovy.json.JsonOutput
