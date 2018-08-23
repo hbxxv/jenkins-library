@@ -1,7 +1,5 @@
 src/com/me/slack.groovy
 
-package com.me;
-
 import groovy.json.JsonOutput
 import java.util.Optional
 import hudson.model.Actionable
