@@ -23,10 +23,9 @@ def notifySlack(text, channel, attachments) {
 def slackNotificationChannel = "spam"
 def message = ""
 def author = ""
-def commit = sh(returnStdout: true, script: 'git rev-parse HEAD')
-
 
 def getGitAuthor() {
+    def commit = sh(returnStdout: true, script: 'git rev-parse HEAD')
     author = sh(returnStdout: true, script: "git --no-pager show -s --format='%an' ${commit}").trim()
 }
 
