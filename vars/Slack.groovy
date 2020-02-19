@@ -7,7 +7,7 @@ import hudson.tasks.junit.CaseResult
 
 
 def notifySlack(text, channel, attachments) {
-    def slackURL = 'https://hooks.slack.com/services/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'
+    def slackURL = 'SLACK_HOOKS'
     def jenkinsIcon = 'https://wiki.jenkins-ci.org/download/attachments/2916393/logo.png'
 
     def payload = JsonOutput.toJson([text: text,
